@@ -1,3 +1,4 @@
+import { Analytics } from '@vercel/analytics/react'
 import type { AppProps } from 'next/app'
 import { Catamaran } from 'next/font/google'
 
@@ -14,6 +15,7 @@ const catamaran = Catamaran({
 const App = ({ Component, pageProps }: AppProps) => (
   <main className={`${catamaran.variable} font-sans text-dark`}>
     <Component {...pageProps} />
+    <Analytics />
   </main>
 )
 
