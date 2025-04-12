@@ -17,10 +17,11 @@ const CategoryColorBg = ({ children, outerClassName }: CategoryColorBgProps) => 
       <div
         style={{
           backgroundColor: selectedCategory
-            ? getCategoryById(selectedCategory.id)?.color
+            ? `${getCategoryById(selectedCategory.id)?.color}11` // Very subtle color with 11 hex opacity
             : color('mapBg'),
+          boxShadow: selectedCategory ? 'inset 0 0 0 1px rgba(255,255,255,0.1)' : 'none',
         }}
-        className="absolute inset-0"
+        className="absolute inset-0 transition-all duration-300 ease-in-out"
       />
       {children}
     </div>

@@ -4,6 +4,7 @@ import { Marker as ReactMapGLMarker } from 'react-map-gl'
 import { rsc } from 'react-styled-classnames'
 
 import IconCircle from '@/components/IconCircle'
+import { CATEGORY_ID } from '@/lib/constants'
 import { Category, Place } from '@/lib/types/entityTypes'
 
 const StyledBadge = rsc.span`
@@ -86,6 +87,9 @@ const Marker = memo(
       }
     }, [clusterId, handleClusterClick, handleMarkerClick, latitude, longitude, markerId])
 
+    // Check if soundscape category
+    const isSoundscape = category.id === CATEGORY_ID.SOUNDSCAPE
+
     return (
       <ReactMapGLMarker latitude={latitude} longitude={longitude} onClick={handleClick}>
         <div className="origin-bottom">
@@ -98,7 +102,7 @@ const Marker = memo(
           <div className="relative z-20">
             <IconCircle
               size={markerSize}
-              path={category.iconMedium ? `/${category.iconMedium}` : ''}
+              path={!isSoundscape && category.iconMedium ? `/${category.iconMedium}` : ''}
               color={color}
               bgColor={category.color}
               shadow

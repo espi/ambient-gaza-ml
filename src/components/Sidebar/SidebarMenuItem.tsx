@@ -12,26 +12,26 @@ interface SidebarMenuItemProps {
 
 const SidebarMenuItem = ({ handleClick, selected, category }: SidebarMenuItemProps) => {
   const selectedCategory = useMapStore(state => state.selectedCategory)
+  const isSelected = selectedCategory?.id === category.id
 
   return (
     <Button
       key={category.id}
-      className={`relative p-1 gap-2 md:p-2 w-full flex ${
-        selectedCategory ? 'text-white' : ''
-      } justify-start`}
+      className="relative p-1 gap-2 md:p-2 w-full flex justify-start transition-all duration-200"
       noGutter
-      style={{ ...(!selectedCategory ? { color: category.color } : {}) }}
+      style={{
+        color: category.color,
+        backgroundColor: isSelected ? `${category.color}22` : 'transparent',
+      }}
       onClick={() => handleClick(selected ? undefined : category.id)}
       noBorderRadius
     >
       <div
-        className={`md:text-lg ${
-          selectedCategory?.id === category.id ? 'underline' : ''
-        } w-full pl-2`}
+        className="md:text-lg w-full pl-2 py-1 transition-all duration-200"
         style={{
-          borderLeft: `4px solid ${
-            selectedCategory?.id === category.id ? 'white' : category.color
-          }`,
+          borderLeft: `3px solid ${category.color}`,
+          opacity: isSelected ? 1 : 0.8,
+          fontWeight: isSelected ? 600 : 400,
         }}
       >
         {category.name}

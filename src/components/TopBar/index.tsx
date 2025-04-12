@@ -21,14 +21,14 @@ const TopBar = () => {
       <div className="px-4 sm:px-6 md:px-8 relative flex items-center justify-between h-full">
         <div className="flex items-center gap-4 md:gap-8">
           <Logo />
-          <div className="h-10 w-px bg-light/30 hidden md:block" />
-          {selectedCategory && <CategoryDisplay />}
+          <div className="h-10 w-px bg-light/20 hidden md:block" />
+          <CategoryDisplay />
         </div>
 
         {!selectedCategory && (
           <div className="text-right">
-            <span className="inline-flex items-center gap-2 uppercase font-bold">
-              <div className="text-sm md:text-lg overflow-visible w-[110px] md:w-auto border-r-4 border-light/50 pr-2">
+            <span className="inline-flex items-center gap-2 uppercase text-dark/80 font-medium">
+              <div className="text-sm md:text-base overflow-visible w-[110px] md:w-auto">
                 <p className="leading-none truncate">{throttledViewState?.latitude?.toFixed(4)}</p>
                 <p className="leading-none truncate">{throttledViewState?.longitude?.toFixed(4)}</p>
               </div>

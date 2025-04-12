@@ -24,21 +24,24 @@ const MarkersContainer = () => {
   const handleMarkerClick = useCallback(
     (id: Place['id']) => {
       const place = getPlaceById(id)
-      if (!place || !map || id === markerPopup) return
+      if (!place || !map) return
 
-      setMarkerPopup(id)
+      // Always reset the popup first, even if it's the same ID
+      setMarkerPopup(undefined)
 
-      handleMapMove({
-        latitude: place.latitude,
-        longitude: place.longitude,
-        zoom: map.getZoom(),
-        offset: [0, -30],
-        mouseUpOnceCallback: () => {
-          setMarkerPopup(undefined)
-        },
-      })
+      // Use a small timeout to ensure the state is fully reset before initializing a new popup
+      setTimeout(() => {
+        setMarkerPopup(id)
+
+        handleMapMove({
+          latitude: place.latitude,
+          longitude: place.longitude,
+          zoom: map.getZoom(),
+          offset: [0, -30],
+        })
+      }, 50)
     },
-    [getPlaceById, handleMapMove, map, markerPopup, setMarkerPopup],
+    [getPlaceById, handleMapMove, map, setMarkerPopup],
   )
 
   return (
