@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AudioPlayer Test Page</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .test-controls {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 8px 16px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3367d6;
+        }
+
+        .mobile-note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>AudioPlayer Test Page</h1>
+        <p>This page tests the AudioPlayer component in isolation.</p>
+
+        <div class="mobile-note">
+            <strong>Mobile Users:</strong> Mobile browsers require user interaction before playing audio.
+            Press the "Initialize Audio" button first, then try playing.
+        </div>
+
+        <div id="root"></div>
+
+        <div class="test-controls">
+            <h3>Test Controls</h3>
+            <button id="initAudio">Initialize Audio (Mobile First)</button>
+            <button id="checkFiles">Check Audio Files</button>
+            <button id="loadAudio1">Load Beach Ambient</button>
+            <button id="loadAudio2">Load Alternative Audio</button>
+        </div>
+    </div>
+
+    <script type="text/babel">
+        // Simplified AudioPlayer component based on the original
+        const AudioPlayer = ({ src, isAudioPlaying, setIsAudioPlaying }) => {
+            const [audio, setAudio] = React.useState(null);
+            const [loading, setLoading] = React.useState(true);
+            const [error, setError] = React.useState(null);
+            const [progress, setProgress] = React.useState(0);
+            const [initialized, setInitialized] = React.useState(false);
+
+            // Separate initialization from auto-loading
+            const initializeAudio = () => {
+                try {
+                    console.log("Initializing audio with src:", src);
+                    let audioElement = new Audio();
+
+                    // Set up event listeners before setting src
+                    audioElement.addEventListener('canplaythrough', () => {
+                        console.log("Audio can play through");
+                        setLoading(false);
+                    });
+
+                    audioElement.addEventListener('loadedmetadata', () => {
+                        console.log("Audio metadata loaded, duration:", audioElement.duration);
+                    });
+
+                    audioElement.addEventListener('error', (e) => {
+                        // Get detailed error information
+                        let errorMessage = "Unknown error";
+                        if (audioElement.error) {
+                            switch (audioElement.error.code) {
+                                case 1: errorMessage = "MEDIA_ERR_ABORTED"; break;
+                                case 2: errorMessage = "MEDIA_ERR_NETWORK"; break;
+                                case 3: errorMessage = "MEDIA_ERR_DECODE"; break;
+                                case 4: errorMessage = "MEDIA_ERR_SRC_NOT_SUPPORTED"; break;
+                                default: errorMessage = `Unknown error code: ${audioElement.error.code}`;
+                            }
+                        }
+
+                        console.error("Audio error:", errorMessage, e);
+                        setError(`Error loading audio: ${errorMessage}`);
+                        setLoading(false);
+                    });
+
+                    audioElement.addEventListener('timeupdate', () => {
+                        if (audioElement.duration) {
+                            const value = (audioElement.currentTime / audioElement.duration) * 100;
+                            setProgress(value);
+                        }
+                    });
+
+                    audioElement.addEventListener('ended', () => {
+                        setIsAudioPlaying(false);
+                        audioElement.currentTime = 0;
+                    });
+
+                    // Now set the source - this approach works better on mobile
+                    audioElement.src = src;
+                    audioElement.preload = "auto";
+                    audioElement.load();
+
+                    setAudio(audioElement);
+                    setInitialized(true);
+                    setError(null);
+                    console.log("Audio initialized");
+                } catch (err) {
+                    console.error("Error setting up audio:", err);
+                    setError(`Setup error: ${err.message}`);
+                }
+            };
+
+            // Effect for src changes
+            React.useEffect(() => {
+                if (initialized && audio) {
+                    // Clean up old audio
+                    audio.pause();
+
+                    // Update src
+                    console.log("Updating audio source to:", src);
+                    setLoading(true);
+                    audio.src = src;
+                    audio.load();
+                }
+            }, [src, initialized, audio]);
+
+            // Effect for play/pause state
+            React.useEffect(() => {
+                if (audio && initialized) {
+                    if (isAudioPlaying) {
+                        console.log("Playing audio");
+                        setLoading(false); // Ensure we're not stuck in loading
+                        const playPromise = audio.play();
+                        if (playPromise !== undefined) {
+                            playPromise
+                                .then(() => console.log("Audio playback started"))
+                                .catch(err => {
+                                    console.error("Audio playback failed:", err);
+                                    setError(`Playback error: ${err.message || 'User interaction required'}`);
+                                    setIsAudioPlaying(false);
+                                });
+                        }
+                    } else {
+                        console.log("Pausing audio");
+                        audio.pause();
+                    }
+                }
+            }, [audio, isAudioPlaying, setIsAudioPlaying, initialized]);
+
+            const handlePlayPause = () => {
+                if (!initialized) {
+                    initializeAudio();
+                    // Don't start playing right away, wait for initialization
+                    return;
+                }
+                setIsAudioPlaying(!isAudioPlaying);
+            };
+
+            return (
+                <div style={{ border: '1px solid #ccc', borderRadius: '5px', padding: '10px', marginTop: '20px' }}>
+                    <h3>Audio Player</h3>
+                    <div style={{ marginBottom: '10px' }}>
+                        <p>Source: {src}</p>
+                        <p>Status: {!initialized ? 'Not Initialized' : loading ? 'Loading' : isAudioPlaying ? 'Playing' : 'Paused'}</p>
+                    </div>
+
+                    {error ? (
+                        <div style={{ color: 'red', marginBottom: '10px' }}>
+                            <p>{error}</p>
+                        </div>
+                    ) : null}
+
+                    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                        <button onClick={handlePlayPause} style={{ minWidth: '80px' }}>
+                            {!initialized ? 'Initialize' : isAudioPlaying ? 'Pause' : 'Play'}
+                        </button>
+                        <div style={{ marginLeft: '10px', flex: 1 }}>
+                            <div style={{
+                                width: '100%',
+                                height: '6px',
+                                backgroundColor: '#eee',
+                                borderRadius: '3px'
+                            }}>
+                                <div style={{
+                                    width: `${progress}%`,
+                                    height: '100%',
+                                    backgroundColor: '#4285f4',
+                                    borderRadius: '3px'
+                                }}></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App component
+        const App = () => {
+            const [audioSrc, setAudioSrc] = React.useState('/audio/gaza_beach_ambient.mp3');
+            const [isPlaying, setIsPlaying] = React.useState(false);
+            const [fileStatus, setFileStatus] = React.useState(null);
+            const playerRef = React.useRef(null);
+
+            // Check if audio files actually exist
+            const checkAudioFiles = () => {
+                setFileStatus("Checking files...");
+                const filesToCheck = [
+                    '/audio/gaza_beach_ambient.mp3',
+                    '/audio/alternative.mp3'
+                ];
+
+                Promise.all(filesToCheck.map(file =>
+                    fetch(file)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            return `${file}: OK (${response.headers.get('content-type') || 'unknown type'})`;
+                        })
+                        .catch(e => `${file}: ERROR - ${e.message}`)
+                )).then(results => {
+                    console.log("File check results:", results);
+                    setFileStatus(results.join(', '));
+                });
+            };
+
+            // Initialize audio (useful for mobile)
+            const initAudio = () => {
+                console.log("Manual audio initialization");
+                // Create and play a silent audio to unlock audio on iOS
+                const silentAudio = new Audio("data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4LjI5LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAABIADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV6urq6urq6urq6urq6urq6urq6urq6urq6v////////////////////////////////8AAAAATGF2YzU4LjU0AAAAAAAAAAAAAAAAJAAAAAAAAAAAASDs90hvAAAAAAAAAAAAAAAAAAAA//MUZAAAAAGkAAAAAAAAA0gAAAAATEFN//MUZAMAAAGkAAAAAAAAA0gAAAAARTMu//MUZAYAAAGkAAAAAAAAA0gAAAAAOTku//MUZAkAAAGkAAAAAAAAA0gAAAAANVVV");
+                silentAudio.volume = 0.1;
+                const playPromise = silentAudio.play();
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => { console.log("Audio context unlocked"); })
+                        .catch(e => { console.error("Could not unlock audio context", e); });
+                }
+            };
+
+            React.useEffect(() => {
+                // Connect the test buttons
+                document.getElementById('initAudio').addEventListener('click', initAudio);
+
+                document.getElementById('checkFiles').addEventListener('click', checkAudioFiles);
+
+                document.getElementById('loadAudio1').addEventListener('click', () => {
+                    setIsPlaying(false);
+                    setTimeout(() => {
+                        setAudioSrc('/audio/gaza_beach_ambient.mp3');
+                    }, 300);
+                });
+
+                document.getElementById('loadAudio2').addEventListener('click', () => {
+                    setIsPlaying(false);
+                    setTimeout(() => {
+                        setAudioSrc('/audio/alternative.mp3');
+                    }, 300);
+                });
+
+                // Detect mobile
+                const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+                if (isMobile) {
+                    console.log("Mobile device detected");
+                }
+
+                return () => {
+                    // Clean up event listeners
+                    document.getElementById('initAudio')?.removeEventListener('click', initAudio);
+                    document.getElementById('checkFiles')?.removeEventListener('click', checkAudioFiles);
+                };
+            }, []);
+
+            return (
+                <div ref={playerRef}>
+                    <div style={{ marginBottom: '20px' }}>
+                        <h2>Current Audio Source</h2>
+                        <p>{audioSrc}</p>
+                        {fileStatus && (
+                            <div style={{ backgroundColor: '#e9ecef', padding: '10px', borderRadius: '4px', fontSize: '14px' }}>
+                                <strong>File Status:</strong> {fileStatus}
+                            </div>
+                        )}
+                    </div>
+
+                    <AudioPlayer
+                        src={audioSrc}
+                        isAudioPlaying={isPlaying}
+                        setIsAudioPlaying={setIsPlaying}
+                    />
+
+                    <div style={{ marginTop: '20px' }}>
+                        <h3>Troubleshooting Tips</h3>
+                        <ul>
+                            <li>Try the "Initialize Audio" button first</li>
+                            <li>Check if audio files exist using the "Check Audio Files" button</li>
+                            <li>Mobile browsers may require a direct user interaction</li>
+                            <li>iOS requires audio to be initialized in response to a user gesture</li>
+                        </ul>
+                    </div>
+
+                    <div style={{ marginTop: '20px' }}>
+                        <h3>Debug Information</h3>
+                        <pre id="debug" style={{
+                            backgroundColor: '#f5f5f5',
+                            padding: '10px',
+                            borderRadius: '5px',
+                            maxHeight: '200px',
+                            overflow: 'auto'
+                        }}></pre>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the app
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+
+        // Capture console logs for debugging
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+
+        console.log = function () {
+            const args = Array.from(arguments);
+            const debugElement = document.getElementById('debug');
+            if (debugElement) {
+                debugElement.innerHTML += `<div style="color:blue">LOG: ${args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ')}</div>`;
+                debugElement.scrollTop = debugElement.scrollHeight;
+            }
+            originalConsoleLog.apply(console, arguments);
+        };
+
+        console.error = function () {
+            const args = Array.from(arguments);
+            const debugElement = document.getElementById('debug');
+            if (debugElement) {
+                debugElement.innerHTML += `<div style="color:red">ERROR: ${args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : arg).join(' ')}</div>`;
+                debugElement.scrollTop = debugElement.scrollHeight;
+            }
+            originalConsoleError.apply(console, arguments);
+        };
+
+        // Log environment info
+        console.log("User Agent:", navigator.userAgent);
+        console.log("Platform:", navigator.platform);
+    </script>
+</body>
+
+</html>

@@ -1,8 +1,8 @@
 import { Headphones, Minimize2, X } from 'lucide-react'
 import { Popup } from 'react-map-gl'
 
-import AudioPlayer from '@/components/AudioPlayer'
 import Button from '@/components/Button'
+import MobileAudioPlayer from '@/components/MobileAudioPlayer'
 import useCategories from '@/hooks/useCategories'
 import { AppConfig } from '@/lib/AppConfig'
 import { Place } from '@/lib/types/entityTypes'
@@ -37,6 +37,17 @@ const PopupItem = ({ place, handleBackToCluster }: PopupItemProps) => {
     return 'Listen to ambient sounds from Gaza'
   }
 
+  // Convert the audio path to a fully qualified URL if needed
+  const getAudioUrl = (audioFile: string): string => {
+    // If it already starts with http/https or a slash, return as is
+    if (audioFile.startsWith('http') || audioFile.startsWith('/')) {
+      return audioFile
+    }
+
+    // Otherwise, prepend with a slash to ensure it's a root-relative URL
+    return `/${audioFile}`
+  }
+
   return (
     <Popup
       className="w-10/12"
@@ -66,7 +77,11 @@ const PopupItem = ({ place, handleBackToCluster }: PopupItemProps) => {
                   <Headphones size={16} className="text-brand-primary" />
                   <p className="text-sm font-medium text-dark/80 m-0">{getAudioDescription()}</p>
                 </div>
-                <AudioPlayer audioSrc={place.audioFile} />
+                {typeof place.audioFile === 'string' && place.audioFile.trim() !== '' ? (
+                  <MobileAudioPlayer audioSrc={getAudioUrl(place.audioFile)} />
+                ) : (
+                  <div className="text-sm text-red-500">Audio file not available</div>
+                )}
               </div>
             )}
 
