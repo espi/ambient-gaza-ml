@@ -68,8 +68,11 @@ const usePlaces = () => {
     // Initialize an empty object to store the grouped places
     const group: Record<CATEGORY_ID, Place[]> = {} as Record<CATEGORY_ID, Place[]>
 
+    // If no category is selected, use all places
+    const displayPlaces = !selectedCategory ? rawPlaces : getCatPlaces(selectedCategory.id)
+
     // Group the places by category
-    markerData.forEach(place => {
+    displayPlaces.forEach(place => {
       const { category } = place
       if (!group[category]) {
         group[category] = []
@@ -78,7 +81,7 @@ const usePlaces = () => {
     })
 
     return group
-  }, [markerData])
+  }, [selectedCategory, rawPlaces, getCatPlaces])
 
   /** get place object by id input */
   const getPlaceById = useCallback(

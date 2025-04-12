@@ -1,9 +1,10 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { rsc } from 'react-styled-classnames'
 
 import CategoryColorBg from '@/components/CategoryColorBg'
 import SidebarMenuItem from '@/components/Sidebar/SidebarMenuItem'
 import useCategories from '@/hooks/useCategories'
+import usePlaces from '@/hooks/usePlaces'
 import { CATEGORY_ID } from '@/lib/constants'
 import useMapContext from '@/src/map/useMapContext'
 import useMapStore from '@/zustand/useMapStore'
@@ -24,6 +25,17 @@ const Sidebar = () => {
   const isMapGlLoaded = useMapStore(state => state.isMapGlLoaded)
   const setSelectedCategory = useMapStore(state => state.setSelectedCategory)
   const { categories, getCategoryById } = useCategories()
+  const { rawPlaces } = usePlaces()
+
+  // Filter categories to only include those that have places
+  // Always use rawPlaces to determine which categories have places
+  const categoriesWithPlaces = useMemo(() => {
+    // Create a set of all category IDs that have places
+    const allCategoriesWithPlaces = new Set(rawPlaces.map(place => place.category))
+
+    // Filter categories to only include those that have places
+    return Object.values(categories).filter(category => allCategoriesWithPlaces.has(category.id))
+  }, [categories, rawPlaces])
 
   // todo: split into smaller event handlers
   const handleClick = useCallback(
@@ -47,7 +59,7 @@ const Sidebar = () => {
     <StyledSidebar>
       <CategoryColorBg outerClassName="p-2">
         <div className="w-full z-10 relative">
-          {Object.values(categories).map(category => (
+          {categoriesWithPlaces.map(category => (
             <SidebarMenuItem
               key={category.id}
               category={category}

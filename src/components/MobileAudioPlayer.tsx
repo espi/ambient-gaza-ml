@@ -196,13 +196,6 @@ const MobileAudioPlayer = ({ audioSrc, className = '' }: MobileAudioPlayerProps)
 
   return (
     <div className={`flex flex-col bg-light/20 rounded-md p-2 ${className}`}>
-      {/* Audio source info in debug mode */}
-      {DEBUG && (
-        <div className="text-xs text-gray-500 truncate mb-2">
-          <strong>Source:</strong> {audioSrc}
-        </div>
-      )}
-
       {/* iOS notice */}
       {isIOS.current && (
         <div className="text-xs text-amber-700 bg-amber-50 p-1 rounded mb-2">

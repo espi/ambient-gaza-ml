@@ -1,9 +1,7 @@
 import Button from '@/components/Button'
-import IconCircle from '@/components/IconCircle'
 import { AppConfig } from '@/lib/AppConfig'
 import { CATEGORY_ID } from '@/lib/constants'
 import { Category } from '@/lib/types/entityTypes'
-import { theme } from '@/root/tailwind.config'
 import useMapStore from '@/zustand/useMapStore'
 
 interface SidebarMenuItemProps {
@@ -26,13 +24,16 @@ const SidebarMenuItem = ({ handleClick, selected, category }: SidebarMenuItemPro
       onClick={() => handleClick(selected ? undefined : category.id)}
       noBorderRadius
     >
-      <IconCircle
-        path={category.iconPathSVG}
-        size={AppConfig.ui.markerIconSize}
-        bgColor={selectedCategory?.id === category.id ? theme.colors.white : category.color}
-        invert={selectedCategory?.id === category.id}
-      />
-      <div className={`md:text-lg ${selectedCategory?.id === category.id ? 'underline' : ''}`}>
+      <div
+        className={`md:text-lg ${
+          selectedCategory?.id === category.id ? 'underline' : ''
+        } w-full pl-2`}
+        style={{
+          borderLeft: `4px solid ${
+            selectedCategory?.id === category.id ? 'white' : category.color
+          }`,
+        }}
+      >
         {category.name}
       </div>
     </Button>

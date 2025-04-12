@@ -5,6 +5,7 @@ import Button from '@/components/Button'
 import MobileAudioPlayer from '@/components/MobileAudioPlayer'
 import useCategories from '@/hooks/useCategories'
 import { AppConfig } from '@/lib/AppConfig'
+import { CATEGORY_ID } from '@/lib/constants'
 import { Place } from '@/lib/types/entityTypes'
 import useMapStore from '@/zustand/useMapStore'
 
@@ -20,8 +21,14 @@ const PopupItem = ({ place, handleBackToCluster }: PopupItemProps) => {
 
   if (!currentCat) return null
 
-  // Format the audio description based on the place name
+  // Format the audio description based on the place name or category
   const getAudioDescription = (): string => {
+    // For soundscape category, use a specific description
+    if (place.category === CATEGORY_ID.SOUNDSCAPE) {
+      return 'Listen to Gaza soundscape'
+    }
+
+    // For other categories with specific places
     if (
       place.headline.includes('Beach') ||
       place.headline.includes('Mosque') ||
@@ -34,6 +41,7 @@ const PopupItem = ({ place, handleBackToCluster }: PopupItemProps) => {
     ) {
       return 'Listen to Ahmed'
     }
+
     return 'Listen to ambient sounds from Gaza'
   }
 

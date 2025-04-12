@@ -1,3 +1,4 @@
+import { CATEGORY_ID } from '@/lib/constants'
 import { Place } from '@/lib/types/entityTypes'
 
 /**
@@ -67,5 +68,62 @@ export const gazaPlaces: Place[] = [
     longitude: 34.4398225,
     category: 1,
     audioFile: '/audio/gaza_university_ambient.mp3',
+  },
+  // Soundscape locations
+  {
+    id: 2000001,
+    headline: 'Olive Harvest',
+    latitude: 31.516182,
+    longitude: 34.515818,
+    category: CATEGORY_ID.SOUNDSCAPE,
+    audioFile: '/audio/soundscape/1-olive-harvest.mp3',
+  },
+  {
+    id: 2000002,
+    headline: 'Streets - Gaza City',
+    latitude: 31.515014,
+    longitude: 34.450125,
+    category: CATEGORY_ID.SOUNDSCAPE,
+    audioFile: '/audio/soundscape/2-streets---gaza-city.mp3',
+  },
+  {
+    id: 2000003,
+    headline: 'Playground - Gaza City',
+    latitude: 31.508209,
+    longitude: 34.471236,
+    category: CATEGORY_ID.SOUNDSCAPE,
+    audioFile: '/audio/soundscape/3-playground---gaza-city.mp3',
+  },
+  {
+    id: 2000004,
+    headline: 'Beach - Gaza',
+    latitude: 31.514329,
+    longitude: 34.422793,
+    category: CATEGORY_ID.SOUNDSCAPE,
+    audioFile: '/audio/soundscape/4-beach---gaza.mp3',
+  },
+  {
+    id: 2000005,
+    headline: 'Graduation - University of Gaza',
+    latitude: 31.5118491,
+    longitude: 34.4433725,
+    category: CATEGORY_ID.SOUNDSCAPE,
+    audioFile: '/audio/soundscape/5-graduation---university-of-gaza.mp3',
+  },
+  {
+    id: 2000006,
+    headline: 'Date Harvest - Deir al-Balah',
+    latitude: 31.409113,
+    longitude: 34.378043,
+    category: CATEGORY_ID.SOUNDSCAPE,
+    audioFile: '/audio/soundscape/6-date-harvest---deir-al-balah.mp3',
+  },
+  {
+    id: 2000007,
+    headline: 'Fish Market - Gaza Sea Port',
+    latitude: 31.524585,
+    longitude: 34.428212,
+    category: CATEGORY_ID.SOUNDSCAPE,
+    audioFile: '/audio/soundscape/7-fish-market---gaza-sea-port.mp3',
   },
 ]

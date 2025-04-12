@@ -28,11 +28,10 @@ const TopBar = () => {
         {!selectedCategory && (
           <div className="text-right">
             <span className="inline-flex items-center gap-2 uppercase font-bold">
-              <div className="text-sm md:text-lg overflow-visible w-[110px] md:w-auto">
+              <div className="text-sm md:text-lg overflow-visible w-[110px] md:w-auto border-r-4 border-light/50 pr-2">
                 <p className="leading-none truncate">{throttledViewState?.latitude?.toFixed(4)}</p>
                 <p className="leading-none truncate">{throttledViewState?.longitude?.toFixed(4)}</p>
               </div>
-              <Icon size={AppConfig.ui.barIconSize} icon={ICON.COMPASS} />
             </span>
           </div>
         )}

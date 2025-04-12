@@ -10,7 +10,7 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
-      mapBg: '#FBF8F4',
+      mapBg: '#F6F4F1',
       dark: colors.slate[900],
       darkLight: colors.slate[700],
       gray: colors.slate[400],
@@ -18,14 +18,14 @@ module.exports = {
       white: colors.slate[50],
       primary: colors.sky[600],
       brand: {
-        primary: '#1A5D7A', // Deep blue-green
-        secondary: '#7DC383', // Soft green
-        accent: '#F7A072', // Warm orange
-        dark: '#33312E', // Nearly black
+        primary: '#3D5A80',
+        secondary: '#81B29A',
+        accent: '#E07A5F',
+        dark: '#2A3D45',
       },
-      success: '#27C485',
-      warning: '#F1B650',
-      error: '#EC2D18',
+      success: '#81B29A',
+      warning: '#F2CC8F',
+      error: '#E07A5F',
     },
     extend: {
       fontSize: {
@@ -41,9 +41,9 @@ module.exports = {
     function ({ addBase }) {
       addBase({
         ':root': {
-          '--tw-color-brand-primary': '#1A5D7A',
-          '--tw-color-brand-secondary': '#7DC383',
-          '--tw-color-brand-accent': '#F7A072',
+          '--tw-color-brand-primary': '#3D5A80',
+          '--tw-color-brand-secondary': '#81B29A',
+          '--tw-color-brand-accent': '#E07A5F',
           '--tw-color-light': '#e2e8f0',
         },
       })
