@@ -68,7 +68,7 @@ const SettingsBox = () => {
 
   useEffect(() => {
     if (viewportWidth && viewportWidth > 1024) {
-      setIsSettingsOpen(true)
+      setIsSettingsOpen(false)
     }
   }, [viewportWidth])
 

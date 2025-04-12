@@ -142,6 +142,10 @@ const CategoryMarkerCluster = ({
         />
       )
     }
+
+    // Find the place to check if it has an audio file
+    const place = places.find(p => p.id === id)
+
     return (
       <MemoizedMarker
         key={`c-v${id}c${category.id}`}
@@ -153,6 +157,7 @@ const CategoryMarkerCluster = ({
         handleMarkerClick={handleMarkerClick}
         category={category}
         color={themeColor('mapBg')}
+        hasAudio={!!place?.audioFile}
       />
     )
   })

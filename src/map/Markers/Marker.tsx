@@ -1,3 +1,4 @@
+import { Headphones } from 'lucide-react'
 import { memo, useCallback } from 'react'
 import { Marker as ReactMapGLMarker } from 'react-map-gl'
 import { rsc } from 'react-styled-classnames'
@@ -24,6 +25,24 @@ const StyledBadge = rsc.span`
   pt-0.5
 `
 
+const AudioBadge = rsc.span`
+  flex
+  z-20
+  items-center
+  justify-center
+  absolute
+  -bottom-2
+  -right-2
+  border-2
+  border-white
+  bg-brand-primary
+  text-white
+  rounded-full
+  h-6
+  w-6
+  text-xs
+`
+
 interface handleClusterClickProps {
   clusterId: number
   latitude: number
@@ -41,6 +60,7 @@ interface MarkerProps {
   handleMarkerClick?: (id: Place['id']) => void
   pointCount?: number
   color?: string
+  hasAudio?: boolean
 }
 
 const Marker = memo(
@@ -55,6 +75,7 @@ const Marker = memo(
     pointCount,
     category,
     color,
+    hasAudio,
   }: MarkerProps) => {
     const handleClick = useCallback(() => {
       if (handleMarkerClick && markerId) {
@@ -77,16 +98,24 @@ const Marker = memo(
           <div className="relative z-20">
             <IconCircle
               size={markerSize}
-              path={`/${category.iconMedium}`}
+              path={category.iconMedium ? `/${category.iconMedium}` : ''}
               color={color}
               bgColor={category.color}
+              shadow
             />
           </div>
           {pointCount && <StyledBadge>{pointCount}</StyledBadge>}
+          {hasAudio && (
+            <AudioBadge>
+              <Headphones size={14} />
+            </AudioBadge>
+          )}
         </div>
       </ReactMapGLMarker>
     )
   },
 )
+
+Marker.displayName = 'Marker'
 
 export default Marker

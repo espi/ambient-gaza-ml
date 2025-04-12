@@ -1,6 +1,6 @@
 import { throttle } from 'lodash'
 import dynamic from 'next/dynamic'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import type { ErrorEvent, ViewState, ViewStateChangeEvent } from 'react-map-gl'
 import Map from 'react-map-gl'
 
@@ -28,6 +28,13 @@ const Sidebar = dynamic(() => import('@/components/Sidebar'))
 const SettingsBox = dynamic(() => import('@/components/SettingsBox'))
 const TopBar = dynamic(() => import('@/components/TopBar'))
 
+// Gaza Strip coordinates and zoom level
+const GAZA_COORDINATES = {
+  latitude: 31.58, // Center point between Gaza City and Deir al-Balah
+  longitude: 34.4,
+  zoom: 10.0, // Slightly zoomed out to see more locations
+}
+
 const MapInner = () => {
   const setViewState = useMapStore(state => state.setViewState)
   const setThrottledViewState = useMapStore(state => state.setThrottledViewState)
@@ -36,7 +43,7 @@ const MapInner = () => {
   const setIsMapGlLoaded = useMapStore(state => state.setIsMapGlLoaded)
   const { setMap, map } = useMapContext()
   const { viewportWidth, viewportHeight, viewportRef } = useDetectScreen()
-  const { allPlacesBounds } = usePlaces()
+  usePlaces()
 
   const { handleMapMove } = useMapActions()
 
@@ -46,9 +53,14 @@ const MapInner = () => {
   )
 
   const onLoad = useCallback(() => {
-    if (!allPlacesBounds || isMapGlLoaded) return
-    setIsMapGlLoaded(true)
-  }, [allPlacesBounds, isMapGlLoaded, setIsMapGlLoaded])
+    if (!isMapGlLoaded) {
+      setIsMapGlLoaded(true)
+      // Focus on Gaza when the map loads
+      if (map) {
+        handleMapMove(GAZA_COORDINATES)
+      }
+    }
+  }, [isMapGlLoaded, setIsMapGlLoaded, map, handleMapMove])
 
   const onMapMove = useCallback(
     (evt: ViewStateChangeEvent) => {
@@ -58,49 +70,31 @@ const MapInner = () => {
     [setViewState, throttledSetViewState],
   )
 
-  // react on change of marker bounding -> usually when viewport changes
-  // todo: find out why we need the timeout here
-  useEffect(() => {
-    if (!allPlacesBounds || !map) return undefined
-
-    /**
-     * Timeout ID returned by setTimeout function.
-     */
-    const timeout = setTimeout(() => {
-      handleMapMove({
-        latitude: allPlacesBounds.latitude,
-        longitude: allPlacesBounds.longitude,
-        zoom: allPlacesBounds.zoom,
-      })
-    }, 30)
-
-    return () => clearTimeout(timeout)
-  }, [allPlacesBounds, handleMapMove, map])
-
   return (
     <div className="absolute overflow-hidden inset-0 bg-mapBg" ref={viewportRef}>
-      {allPlacesBounds && (
-        <Map
-          // {...throttledSetViewState}
-          initialViewState={allPlacesBounds}
-          ref={e => setMap && setMap(e || undefined)}
-          onError={e => onMapError(e)}
-          onLoad={onLoad}
-          onMove={onMapMove}
-          style={{ width: viewportWidth, height: viewportHeight }}
-          mapStyle={`https://api.maptiler.com/maps/basic-v2/style.json?key=${AppConfig.map.tileKey}`}
-          reuseMaps
-          // disable map rotation since it's not correctly calculated into the bounds atm :')
-          dragRotate={false}
-        >
-          <Popups />
-          {markerJSXRendering ? <Markers /> : <Layers />}
-          <MapControls />
-          <SettingsBox />
-          <Sidebar />
-          <TopBar />
-        </Map>
-      )}
+      {/*
+        Use Gaza coordinates as the initial view state instead of the allPlacesBounds
+        This ensures the map centers on Gaza when it first loads
+      */}
+      <Map
+        initialViewState={GAZA_COORDINATES}
+        ref={e => setMap && setMap(e || undefined)}
+        onError={e => onMapError(e)}
+        onLoad={onLoad}
+        onMove={onMapMove}
+        style={{ width: viewportWidth, height: viewportHeight }}
+        mapStyle={`https://api.maptiler.com/maps/basic-v2/style.json?key=${AppConfig.map.tileKey}`}
+        reuseMaps
+        // disable map rotation since it's not correctly calculated into the bounds atm :')
+        dragRotate={false}
+      >
+        <Popups />
+        {markerJSXRendering ? <Markers /> : <Layers />}
+        <MapControls />
+        <SettingsBox />
+        <Sidebar />
+        <TopBar />
+      </Map>
       {!isMapGlLoaded && (
         <div className="absolute inset-0 bg-mapBg flex justify-center items-center">
           Loading Map...

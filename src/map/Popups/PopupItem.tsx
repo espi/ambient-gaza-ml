@@ -1,13 +1,12 @@
-import { Minimize2, X } from 'lucide-react'
+import { Headphones, Minimize2, X } from 'lucide-react'
 import { Popup } from 'react-map-gl'
 
+import AudioPlayer from '@/components/AudioPlayer'
 import Button from '@/components/Button'
-import IconCircle from '@/components/IconCircle'
 import useCategories from '@/hooks/useCategories'
 import { AppConfig } from '@/lib/AppConfig'
 import { Place } from '@/lib/types/entityTypes'
 import useMapStore from '@/zustand/useMapStore'
-import useSettingsStore from '@/zustand/useSettingsStore'
 
 interface PopupItemProps {
   place: Place
@@ -17,10 +16,26 @@ interface PopupItemProps {
 const PopupItem = ({ place, handleBackToCluster }: PopupItemProps) => {
   const { getCategoryById } = useCategories()
   const setMarkerPopup = useMapStore(state => state.setMarkerPopup)
-  const markerSize = useSettingsStore(state => state.markerSize)
   const currentCat = getCategoryById(place.category)
 
   if (!currentCat) return null
+
+  // Format the audio description based on the place name
+  const getAudioDescription = (): string => {
+    if (
+      place.headline.includes('Beach') ||
+      place.headline.includes('Mosque') ||
+      place.headline.includes('University') ||
+      place.headline.includes('Cemetery') ||
+      place.headline.includes('Seaport') ||
+      place.headline.includes('Home') ||
+      place.headline.includes('Street') ||
+      place.headline.includes('Deir al-Balah')
+    ) {
+      return 'Listen to Ahmed'
+    }
+    return 'Listen to ambient sounds from Gaza'
+  }
 
   return (
     <Popup
@@ -34,9 +49,6 @@ const PopupItem = ({ place, handleBackToCluster }: PopupItemProps) => {
       offset={[0, -AppConfig.ui.markerIconSize] as never}
     >
       <div className="bg-mapBg text-dark shadow-md rounded-md p-2 -mt-3 relative">
-        <div className="flex justify-center absolute w-full left-0 top-0 mt-4">
-          <IconCircle path={`/${currentCat.iconMedium}`} size={markerSize} invert />
-        </div>
         <Button
           className="absolute right-0 top-2 text-dark inline-block"
           onClick={() => setMarkerPopup(undefined)}
@@ -45,12 +57,19 @@ const PopupItem = ({ place, handleBackToCluster }: PopupItemProps) => {
           <X size={AppConfig.ui.mapIconSizeSmall} />
         </Button>
         <div className="flex flex-row justify-center pt-3">
-          <div
-            className="flex flex-col justify-center p-3 text-center w-full"
-            style={{ marginTop: markerSize }}
-          >
+          <div className="flex flex-col justify-center p-3 text-center w-full">
             <h3 className="text-lg font-bold leading-none m-0">{place.headline}</h3>
-            <p className="text-darkLight m-0  mt-2">Population: {place.population}</p>
+
+            {place.audioFile && (
+              <div className="mt-4 border-t border-light/30 pt-3">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Headphones size={16} className="text-brand-primary" />
+                  <p className="text-sm font-medium text-dark/80 m-0">{getAudioDescription()}</p>
+                </div>
+                <AudioPlayer audioSrc={place.audioFile} />
+              </div>
+            )}
+
             <div className="flex flex-row justify-between gap-2 mt-6">
               <Button
                 className="bg-warning text-white gap-2"

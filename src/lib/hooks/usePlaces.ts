@@ -3,8 +3,9 @@ import { useCallback, useMemo, useRef } from 'react'
 
 import useCategories from '@/hooks/useCategories'
 import useDetectScreen from '@/hooks/useDetectScreen'
-import { apiPlaces } from '@/lib/api/placesMock'
+// import { apiPlaces } from '@/lib/api/placesMock' // We don't need the original places anymore
 import { CATEGORY_ID } from '@/lib/constants'
+import { gazaPlaces } from '@/lib/placeData'
 import { Place } from '@/lib/types/entityTypes'
 import useMapStore from '@/zustand/useMapStore'
 import useSettingsStore from '@/zustand/useSettingsStore'
@@ -23,8 +24,8 @@ const usePlaces = () => {
   const { viewportWidth, viewportHeight } = useDetectScreen()
   const { categories } = useCategories()
 
-  // use api call here
-  const { current: rawPlaces } = useRef(apiPlaces)
+  // Use only Gaza places instead of combining with API places
+  const { current: rawPlaces } = useRef(gazaPlaces)
 
   /** returns places by id input */
   const getCatPlaces = useCallback(
@@ -36,7 +37,7 @@ const usePlaces = () => {
   const markerData = useMemo(
     () =>
       limitPlacesLength(
-        !selectedCategory ? apiPlaces : getCatPlaces(selectedCategory.id),
+        !selectedCategory ? gazaPlaces : getCatPlaces(selectedCategory.id),
         markersCount,
       ),
     [getCatPlaces, markersCount, selectedCategory],
@@ -104,11 +105,10 @@ const usePlaces = () => {
         width: viewportWidth,
         height: viewportHeight,
         padding: {
-          bottom: 100,
-          left: 50,
-          right: 50,
-          // Specifying the top padding, but getting the bottom one
-          top: 150,
+          bottom: 120,
+          left: 60,
+          right: 60,
+          top: 180,
         },
         options,
       } as FitBoundsOptions)

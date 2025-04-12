@@ -35,7 +35,7 @@ const IconCircle = ({ icon, path, invert, size, bgColor, color, shadow }: IconCi
         color={color ?? '#ffffff'}
       />
     )}
-    {path && (
+    {path && path.trim() !== '' && (
       <Image
         src={path}
         className={invert ? 'invert' : ''}

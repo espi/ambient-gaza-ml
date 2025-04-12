@@ -18,7 +18,8 @@
     "start": "next start",
     "lint": "next lint",
     "prepare": "husky install",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,json,css,md}\""
   },
   "dependencies": {
     "@math.gl/web-mercator": "^3.6.3",

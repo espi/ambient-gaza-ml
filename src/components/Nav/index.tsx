@@ -34,10 +34,9 @@ const Nav = ({ variant = NavVariant.INTRO }: NavProps) => {
   return (
     <StyledList $variant={variant} $isSelectedCategory={!!selectedCategory}>
       <NavItem
-        href="https://github.com/richard-unterberg/maplibre-nextjs-ts-starter"
-        label="Fork on Github"
-        icon={<Icon size={AppConfig.ui.barIconSize} icon={ICON.GITHUB} />}
-        external
+        href="/"
+        label="Ambient Gaza"
+        icon={<Icon size={AppConfig.ui.barIconSize} icon={ICON.COMPASS} />}
       />
     </StyledList>
   )

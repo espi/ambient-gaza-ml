@@ -15,10 +15,11 @@ export type Category = {
 export type Place = {
   id: number
   headline: string
-  population: number
+  population?: number
   longitude: number
   latitude: number
   category: CATEGORY_ID
+  audioFile?: string // Optional path to an audio file
 }
 
 export type Bound = PointFeature<{
