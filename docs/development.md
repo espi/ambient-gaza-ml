@@ -209,4 +209,52 @@ interface MapStore {
 The project includes Vercel Analytics for performance tracking:
 - Core Web Vitals monitoring
 - User interaction tracking
-- Error boundary reporting 
+- Error boundary reporting
+
+## Implementation Details
+
+### Hover/Focus Popup Functionality
+
+Recent implementation added interactive hover and focus-triggered popups for map markers when using JSX rendering mode.
+
+#### **State Management Extensions**
+Extended `useMapStore` with new hover/focus state:
+```typescript
+interface MapStoreValues {
+  // ... existing properties
+  hoveredMarkerId?: number
+  setHoveredMarkerId: (payload: number | undefined) => void
+  focusedMarkerId?: number
+  setFocusedMarkerId: (payload: number | undefined) => void
+}
+```
+
+#### **Component Updates**
+
+**Marker Component** (`src/map/Markers/Marker.tsx`):
+- Enhanced with hover/focus event handlers
+- Improved accessibility with proper button elements and ARIA labels
+- Added Tailwind classes for smooth visual transitions:
+  - `hover:scale-110 focus:scale-110` for interactive feedback
+  - `transition-transform duration-200` for smooth animations
+
+**New HoverPopup Component** (`src/map/Popups/HoverPopup.tsx`):
+- Lightweight popup for hover/focus states
+- Displays essential place information without heavy UI elements
+- Uses `pointer-events-none` to prevent interaction interference
+
+**Popups Container** (`src/map/Popups/index.tsx`):
+- Integrated hover popup logic alongside existing click popups
+- Smart display logic: hover popups only show when no full popup is active
+
+#### **User Experience Features**
+- **Mouse Interaction**: Hover over markers shows instant preview popup
+- **Keyboard Navigation**: Tab through markers with focus-triggered popups
+- **Accessibility**: Full WCAG compliance with proper ARIA labels and focus management
+- **Performance**: Optimized for JSX rendering mode without affecting layer rendering
+
+#### **Usage**
+1. Enable "Marker Rendering: JSX" in the settings panel
+2. Hover over any marker to see instant popup preview
+3. Use Tab key for keyboard navigation with focus popups
+4. Click markers for full popup experience (unchanged) 

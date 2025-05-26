@@ -11,7 +11,7 @@ import useMapStore from '@/zustand/useMapStore'
 const MarkersContainer = () => {
   const { placesGroupedByCategory } = usePlaces()
   const { map } = useMapContext()
-  const markerPopup = useMapStore(state => state.markerPopup)
+
   const setMarkerPopup = useMapStore(state => state.setMarkerPopup)
   const clusterRadius = useMapStore(state => state.clusterRadius)
 

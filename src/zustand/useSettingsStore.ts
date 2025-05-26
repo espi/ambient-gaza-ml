@@ -27,7 +27,7 @@ const useSettingsStore = create<SettingsStoreValues>()(set => ({
   clusterRadius: AppConfig.defaultClusterRadius,
   setClusterRadius: payload => set(() => ({ clusterRadius: payload })),
 
-  markerJSXRendering: false,
+  markerJSXRendering: true,
   setMarkerJSXRendering: payload => set(() => ({ markerJSXRendering: payload })),
 }))
 

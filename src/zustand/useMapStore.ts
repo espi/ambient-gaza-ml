@@ -13,6 +13,12 @@ interface MapStoreValues {
   setSelectedCategory: (payload: Category | undefined) => void
   markerPopup?: number
   setMarkerPopup: (payload: number | undefined) => void
+  hoveredMarkerId?: number
+  setHoveredMarkerId: (payload: number | undefined) => void
+  hoverTimeoutId?: NodeJS.Timeout
+  setHoverTimeoutId: (payload: NodeJS.Timeout | undefined) => void
+  focusedMarkerId?: number
+  setFocusedMarkerId: (payload: number | undefined) => void
   viewState: ViewState | undefined
   setViewState: (payload: ViewState) => void
   throttledViewState: ViewState | undefined
@@ -43,6 +49,15 @@ const useMapStore = create<MapStoreValues>()(set => ({
 
   markerPopup: undefined,
   setMarkerPopup: payload => set(() => ({ markerPopup: payload })),
+
+  hoveredMarkerId: undefined,
+  setHoveredMarkerId: payload => set(() => ({ hoveredMarkerId: payload })),
+
+  hoverTimeoutId: undefined,
+  setHoverTimeoutId: payload => set(() => ({ hoverTimeoutId: payload })),
+
+  focusedMarkerId: undefined,
+  setFocusedMarkerId: payload => set(() => ({ focusedMarkerId: payload })),
 
   viewState: undefined,
   setViewState: payload => set(() => ({ viewState: payload })),
