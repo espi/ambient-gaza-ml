@@ -1,4 +1,8 @@
+import { Share } from 'lucide-react'
+import { useState } from 'react'
+
 import CategoryColorBg from '@/components/CategoryColorBg'
+import IframeHelper from '@/components/IframeHelper'
 import CategoryDisplay from '@/components/TopBar/CategoryDisplay'
 import { AppConfig } from '@/lib/AppConfig'
 import useMapStore from '@/zustand/useMapStore'
@@ -9,6 +13,7 @@ const TopBar = () => {
   const isMapGlLoaded = useMapStore(state => state.isMapGlLoaded)
   const throttledViewState = useMapStore(state => state.throttledViewState)
   const selectedCategory = useMapStore(state => state.selectedCategory)
+  const [showIframeHelper, setShowIframeHelper] = useState(false)
 
   return isMapGlLoaded ? (
     <div
@@ -24,16 +29,38 @@ const TopBar = () => {
         </div>
 
         {!selectedCategory && (
-          <div className="text-right">
-            <span className="inline-flex items-center gap-2 uppercase text-dark/80 font-medium">
-              <div className="text-sm md:text-base overflow-visible w-[110px] md:w-auto">
-                <p className="leading-none truncate">{throttledViewState?.latitude?.toFixed(4)}</p>
-                <p className="leading-none truncate">{throttledViewState?.longitude?.toFixed(4)}</p>
-              </div>
-            </span>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setShowIframeHelper(true)}
+              className="flex items-center gap-2 px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-md transition-colors text-dark/80 text-sm font-medium"
+              title="Embed this map"
+            >
+              <Share size={16} />
+              <span className="hidden sm:inline">Embed</span>
+            </button>
+
+            <div className="text-right">
+              <span className="inline-flex items-center gap-2 uppercase text-dark/80 font-medium">
+                <div className="text-sm md:text-base overflow-visible w-[110px] md:w-auto">
+                  <p className="leading-none truncate">
+                    {throttledViewState?.latitude?.toFixed(4)}
+                  </p>
+                  <p className="leading-none truncate">
+                    {throttledViewState?.longitude?.toFixed(4)}
+                  </p>
+                </div>
+              </span>
+            </div>
           </div>
         )}
       </div>
+
+      <IframeHelper
+        viewState={throttledViewState}
+        isOpen={showIframeHelper}
+        onClose={() => setShowIframeHelper(false)}
+      />
     </div>
   ) : null
 }
