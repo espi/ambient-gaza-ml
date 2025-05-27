@@ -1,5 +1,6 @@
 import { throttle } from 'lodash'
 import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
 import { useCallback, useMemo } from 'react'
 import type { ErrorEvent, ViewState, ViewStateChangeEvent } from 'react-map-gl'
 import Map from 'react-map-gl'
@@ -26,12 +27,13 @@ const Layers = dynamic(() => import('@/src/map/Layers'))
 const Sidebar = dynamic(() => import('@/components/Sidebar'))
 const SettingsBox = dynamic(() => import('@/components/SettingsBox'))
 const TopBar = dynamic(() => import('@/components/TopBar'))
+const DebugPanel = dynamic(() => import('@/components/DebugPanel'))
 
 // Gaza Strip coordinates and zoom level
 export const GAZA_COORDINATES: ViewState = {
-  latitude: 31.58, // Center point between Gaza City and Deir al-Balah
-  longitude: 34.4,
-  zoom: 10.0, // Slightly zoomed out to see more locations
+  latitude: 31.46, // Moved south to center between Gaza City and Deir al-Balah
+  longitude: 34.42,
+  zoom: 9.0, // Zoomed out more to see all locations
   bearing: 0,
   pitch: 0,
   padding: { top: 0, bottom: 0, left: 0, right: 0 },
@@ -56,6 +58,7 @@ const MapCore = ({
   className = 'absolute overflow-hidden inset-0 bg-mapBg',
   onViewStateChange,
 }: MapCoreProps) => {
+  const router = useRouter()
   const setViewState = useMapStore(state => state.setViewState)
   const setThrottledViewState = useMapStore(state => state.setThrottledViewState)
   const isMapGlLoaded = useMapStore(state => state.isMapGlLoaded)
@@ -64,6 +67,9 @@ const MapCore = ({
   const { setMap, map } = useMapContext()
   const { viewportWidth, viewportHeight, viewportRef } = useDetectScreen()
   usePlaces()
+
+  // Check if debug mode is enabled via URL parameter
+  const isDebugMode = router.query.debug === 'true'
 
   const { handleMapMove } = useMapActions()
 
@@ -111,6 +117,7 @@ const MapCore = ({
         {showSettingsBox && <SettingsBox />}
         {showSidebar && <Sidebar />}
         {showTopBar && <TopBar />}
+        {isDebugMode && <DebugPanel />}
       </Map>
       {!isMapGlLoaded && (
         <div className="absolute inset-0 bg-mapBg flex justify-center items-center">

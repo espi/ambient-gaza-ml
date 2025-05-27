@@ -80,6 +80,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - **[Setup Guide](./docs/setup.md)** - Complete installation and configuration instructions
 - **[Development Guide](./docs/development.md)** - Development workflow, project structure, and best practices  
 - **[MapLibre Integration Guide](./docs/maplibre-setup.md)** - Detailed MapLibre GL customization and usage
+- **[Debugging Guide](./docs/debugging.md)** - Debug panel, marker visibility issues, and troubleshooting workflows
 - **[Deployment Guide](./docs/deployment.md)** - Production deployment to various platforms
 - **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
 

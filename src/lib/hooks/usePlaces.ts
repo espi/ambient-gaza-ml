@@ -52,7 +52,9 @@ const usePlaces = () => {
   /** returns category objects for all markers */
   const markerCategories = useMemo(
     () =>
-      markerCategoryIDs ? markerCategoryIDs.map((key: CATEGORY_ID) => categories[key]) : undefined,
+      markerCategoryIDs
+        ? markerCategoryIDs.map((key: CATEGORY_ID) => categories.find(cat => cat.id === key))
+        : undefined,
     [categories, markerCategoryIDs],
   )
 

@@ -192,11 +192,61 @@ interface MapStore {
 
 ## Debugging
 
+### Debug Panel
+
+The project includes a comprehensive debug panel for development and troubleshooting.
+
+#### **Activation**
+Add `?debug=true` to any URL to enable the debug panel:
+```
+http://localhost:3000?debug=true
+http://localhost:3000/map/embed?debug=true
+```
+
+#### **Implementation**
+```tsx
+// In MapCore.tsx
+const router = useRouter()
+const isDebugMode = router.query.debug === 'true'
+
+// Conditional rendering
+{isDebugMode && <DebugPanel />}
+```
+
+#### **Features**
+- **Real-time Map State**: Loading status, rendering mode, viewport coordinates
+- **Data Validation**: Place counts, category breakdown, coordinate verification
+- **Performance Metrics**: Cluster settings, marker limits, bounds calculation
+- **Development Logging**: Console output for cluster analysis (development only)
+
+#### **Debug Panel Sections**
+1. **Map Status**: Loading state, JSX vs WebGL rendering mode
+2. **Data Counts**: Total places, filtered places, active categories
+3. **Viewport Info**: Current lat/lng/zoom, calculated map bounds
+4. **Category Analysis**: Places grouped by category with counts
+5. **Coordinate List**: All place coordinates for data verification
+
+#### **Common Debug Scenarios**
+
+**Markers Not Visible**:
+1. Check "Map Loaded" shows ✅
+2. Verify "Total Places" matches expected count
+3. Review "Current Viewport" coordinates
+4. Ensure marker coordinates are within "Map Bounds"
+5. Check "Cluster Radius" setting (lower = more individual markers)
+
+**Performance Issues**:
+1. Monitor cluster count vs total places
+2. Check rendering mode (WebGL vs JSX)
+3. Analyze viewport filtering effectiveness
+4. Review console logs for clustering behavior
+
 ### Map Issues
 - Check browser console for MapLibre errors
 - Verify API key is correctly set
 - Test with different map styles
 - Check network requests in DevTools
+- **Use debug panel** (`?debug=true`) for comprehensive diagnostics
 
 ### Build Issues
 - Verify Node.js version compatibility

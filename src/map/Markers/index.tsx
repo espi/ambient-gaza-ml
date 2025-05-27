@@ -58,7 +58,7 @@ const MarkersContainer = () => {
           map={map}
           places={places}
           clusterRadius={clusterRadius}
-          category={getCategoryById(parseFloat(category))}
+          category={getCategoryById(parseInt(category, 10))}
         />
       )
     })

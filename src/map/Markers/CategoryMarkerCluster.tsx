@@ -61,7 +61,7 @@ const CategoryMarkerCluster = ({
     bounds: mapBounds as [number, number, number, number],
     zoom: throttledViewState ? throttledViewState.zoom : 12,
     options: {
-      radius: clusterRadius * 2,
+      radius: clusterRadius,
       maxZoom: 16,
     },
   })
@@ -121,6 +121,22 @@ const CategoryMarkerCluster = ({
     },
     [handleMapMove, supercluster],
   )
+
+  // Debug logging (only in development)
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log(`${category?.name} - Total clusters:`, displayedItems.length)
+    displayedItems.forEach((cluster, index) => {
+      const [lng, lat] = cluster.geometry.coordinates
+      const { cluster: isCluster, point_count, id } = cluster.properties
+      // eslint-disable-next-line no-console
+      console.log(
+        `  ${index}: ${isCluster ? 'CLUSTER' : 'MARKER'} at [${lng.toFixed(4)}, ${lat.toFixed(
+          4,
+        )}] ${isCluster ? `(${point_count} points)` : `(id: ${id})`}`,
+      )
+    })
+  }
 
   return displayedItems.map(cluster => {
     if (!cluster || !category) return null
