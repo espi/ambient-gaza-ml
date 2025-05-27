@@ -5,7 +5,6 @@ import Button from '@/components/Button'
 import MobileAudioPlayer from '@/components/MobileAudioPlayer'
 import useCategories from '@/hooks/useCategories'
 import { AppConfig } from '@/lib/AppConfig'
-import { CATEGORY_ID } from '@/lib/constants'
 import { Place } from '@/lib/types/entityTypes'
 import useMapStore from '@/zustand/useMapStore'
 
@@ -21,18 +20,6 @@ const PopupItem = ({ place, handleBackToCluster, isHoverMode = false }: PopupIte
   const currentCat = getCategoryById(place.category)
 
   if (!currentCat) return null
-
-  // Format the audio description based on the place name or category
-  const getAudioDescription = (): string => {
-    switch (place.category) {
-      case CATEGORY_ID.SOUNDSCAPES:
-        return 'Listen to music and soundscapes'
-      case CATEGORY_ID.SPOKEN_WORD:
-        return 'Listen to Spoken Word'
-      default:
-        return 'Listen to ambient sounds from Gaza'
-    }
-  }
 
   // Convert the audio path to a fully qualified URL if needed
   const getAudioUrl = (audioFile: string): string => {
@@ -73,7 +60,9 @@ const PopupItem = ({ place, handleBackToCluster, isHoverMode = false }: PopupIte
             {place.audioFile && (
               <div className="flex items-center justify-center gap-2 mt-2">
                 <Headphones size={14} className="text-brand-primary" />
-                <p className="text-xs text-dark/70 m-0">{getAudioDescription()}</p>
+                <p className="text-xs text-dark/70 m-0">
+                  {place.audioDescription || 'Audio available'}
+                </p>
               </div>
             )}
 
@@ -98,7 +87,7 @@ const PopupItem = ({ place, handleBackToCluster, isHoverMode = false }: PopupIte
                     <div className="flex items-center justify-center gap-2 mb-2">
                       <Headphones size={16} className="text-brand-primary" />
                       <p className="text-sm font-medium text-dark/80 m-0">
-                        {getAudioDescription()}
+                        {place.audioDescription || 'Audio available'}
                       </p>
                     </div>
                     {typeof place.audioFile === 'string' && place.audioFile.trim() !== '' ? (

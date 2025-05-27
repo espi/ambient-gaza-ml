@@ -20,6 +20,7 @@ export type Place = {
   latitude: number
   category: CATEGORY_ID
   audioFile?: string // Optional path to an audio file
+  audioDescription: string
 }
 
 export type Bound = PointFeature<{
