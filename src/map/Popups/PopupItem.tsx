@@ -1,5 +1,4 @@
 import { Headphones, Minimize2, X } from 'lucide-react'
-import { useCallback } from 'react'
 import { Popup } from 'react-map-gl'
 
 import Button from '@/components/Button'
@@ -25,26 +24,14 @@ const PopupItem = ({ place, handleBackToCluster, isHoverMode = false }: PopupIte
 
   // Format the audio description based on the place name or category
   const getAudioDescription = (): string => {
-    // For soundscape category, use a specific description
-    if (place.category === CATEGORY_ID.SOUNDSCAPE) {
-      return 'Listen to Gaza soundscape'
+    switch (place.category) {
+      case CATEGORY_ID.SOUNDSCAPES:
+        return 'Listen to music and soundscapes'
+      case CATEGORY_ID.SPOKEN_WORD:
+        return 'Listen to Spoken Word'
+      default:
+        return 'Listen to ambient sounds from Gaza'
     }
-
-    // For other categories with specific places
-    if (
-      place.headline.includes('Beach') ||
-      place.headline.includes('Mosque') ||
-      place.headline.includes('University') ||
-      place.headline.includes('Cemetery') ||
-      place.headline.includes('Seaport') ||
-      place.headline.includes('Home') ||
-      place.headline.includes('Street') ||
-      place.headline.includes('Deir al-Balah')
-    ) {
-      return 'Listen to Ahmed'
-    }
-
-    return 'Listen to ambient sounds from Gaza'
   }
 
   // Convert the audio path to a fully qualified URL if needed

@@ -1,5 +1,4 @@
 import Button from '@/components/Button'
-import { AppConfig } from '@/lib/AppConfig'
 import { CATEGORY_ID } from '@/lib/constants'
 import { Category } from '@/lib/types/entityTypes'
 import useMapStore from '@/zustand/useMapStore'

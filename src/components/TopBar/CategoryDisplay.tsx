@@ -1,5 +1,4 @@
 import useCategories from '@/hooks/useCategories'
-import { AppConfig } from '@/lib/AppConfig'
 import useMapStore from '@/zustand/useMapStore'
 
 const CategoryDisplay = () => {

@@ -10,7 +10,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Gaza Beach',
     latitude: 31.519006,
     longitude: 34.427425,
-    category: 1,
+    category: CATEGORY_ID.SPOKEN_WORD,
     audioFile: '/audio/gaza_beach_ambient.mp3',
   },
   {
@@ -18,7 +18,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Gaza Seaport',
     latitude: 31.524585,
     longitude: 34.428212,
-    category: 1,
+    category: CATEGORY_ID.SPOKEN_WORD,
     audioFile: '/audio/gaza_seaport_ambient.mp3',
   },
   {
@@ -26,7 +26,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Rashid Street',
     latitude: 31.520849,
     longitude: 34.431448,
-    category: 1,
+    category: CATEGORY_ID.SPOKEN_WORD,
     audioFile: '/audio/gaza_rashid_street_ambient.mp3',
   },
   {
@@ -34,7 +34,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Palestinian Home',
     latitude: 31.415679,
     longitude: 34.348473,
-    category: 1,
+    category: CATEGORY_ID.SPOKEN_WORD,
     audioFile: '/audio/gaza_house_ambient.mp3',
   },
   {
@@ -42,7 +42,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Deir al-Balah',
     latitude: 31.4171735,
     longitude: 34.3303313,
-    category: 1,
+    category: CATEGORY_ID.SPOKEN_WORD,
     audioFile: '/audio/gaza_deir_al_balah_ambient.mp3',
   },
   {
@@ -50,7 +50,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Al-Bireh Mosque',
     latitude: 31.4166324,
     longitude: 34.3506513,
-    category: 1,
+    category: CATEGORY_ID.SPOKEN_WORD,
     audioFile: '/audio/gaza_mosque_ambient.mp3',
   },
   {
@@ -58,7 +58,7 @@ export const gazaPlaces: Place[] = [
     headline: 'City Cemetery',
     latitude: 31.418,
     longitude: 34.356,
-    category: 1,
+    category: CATEGORY_ID.SPOKEN_WORD,
     audioFile: '/audio/gaza_cemetery_ambient.mp3',
   },
   {
@@ -66,7 +66,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Al-Azhar University',
     latitude: 31.5148035,
     longitude: 34.4398225,
-    category: 1,
+    category: CATEGORY_ID.SPOKEN_WORD,
     audioFile: '/audio/gaza_university_ambient.mp3',
   },
   // Soundscape locations
@@ -75,7 +75,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Olive Harvest',
     latitude: 31.516182,
     longitude: 34.515818,
-    category: CATEGORY_ID.SOUNDSCAPE,
+    category: CATEGORY_ID.SOUNDSCAPES,
     audioFile: '/audio/soundscape/1-olive-harvest.mp3',
   },
   {
@@ -83,7 +83,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Streets - Gaza City',
     latitude: 31.515014,
     longitude: 34.450125,
-    category: CATEGORY_ID.SOUNDSCAPE,
+    category: CATEGORY_ID.SOUNDSCAPES,
     audioFile: '/audio/soundscape/2-streets---gaza-city.mp3',
   },
   {
@@ -91,7 +91,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Playground - Gaza City',
     latitude: 31.508209,
     longitude: 34.471236,
-    category: CATEGORY_ID.SOUNDSCAPE,
+    category: CATEGORY_ID.SOUNDSCAPES,
     audioFile: '/audio/soundscape/3-playground---gaza-city.mp3',
   },
   {
@@ -99,7 +99,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Beach - Gaza',
     latitude: 31.514329,
     longitude: 34.422793,
-    category: CATEGORY_ID.SOUNDSCAPE,
+    category: CATEGORY_ID.SOUNDSCAPES,
     audioFile: '/audio/soundscape/4-beach---gaza.mp3',
   },
   {
@@ -107,7 +107,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Graduation - University of Gaza',
     latitude: 31.5118491,
     longitude: 34.4433725,
-    category: CATEGORY_ID.SOUNDSCAPE,
+    category: CATEGORY_ID.SOUNDSCAPES,
     audioFile: '/audio/soundscape/5-graduation---university-of-gaza.mp3',
   },
   {
@@ -115,7 +115,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Date Harvest - Deir al-Balah',
     latitude: 31.409113,
     longitude: 34.378043,
-    category: CATEGORY_ID.SOUNDSCAPE,
+    category: CATEGORY_ID.SOUNDSCAPES,
     audioFile: '/audio/soundscape/6-date-harvest---deir-al-balah.mp3',
   },
   {
@@ -123,7 +123,7 @@ export const gazaPlaces: Place[] = [
     headline: 'Fish Market - Gaza Sea Port',
     latitude: 31.524585,
     longitude: 34.428212,
-    category: CATEGORY_ID.SOUNDSCAPE,
+    category: CATEGORY_ID.SOUNDSCAPES,
     audioFile: '/audio/soundscape/7-fish-market---gaza-sea-port.mp3',
   },
 ]

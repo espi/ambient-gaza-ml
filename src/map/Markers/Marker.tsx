@@ -147,7 +147,7 @@ const Marker = memo(
     )
 
     // Check if soundscape category
-    const isSoundscape = category.id === CATEGORY_ID.SOUNDSCAPE
+    const isSoundscape = category.id === CATEGORY_ID.SOUNDSCAPES
 
     return (
       <ReactMapGLMarker latitude={latitude} longitude={longitude} onClick={handleClick}>

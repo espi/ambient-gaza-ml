@@ -1,7 +1,4 @@
 export enum CATEGORY_ID {
-  CAT1 = 1,
-  CAT2 = 2,
-  CAT3 = 3,
-  CAT4 = 4,
-  SOUNDSCAPE = 5,
+  SPOKEN_WORD = 1,
+  SOUNDSCAPES = 2,
 }

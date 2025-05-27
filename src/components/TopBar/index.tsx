@@ -1,8 +1,6 @@
 import CategoryColorBg from '@/components/CategoryColorBg'
-import Icon from '@/components/Icon'
 import CategoryDisplay from '@/components/TopBar/CategoryDisplay'
 import { AppConfig } from '@/lib/AppConfig'
-import { ICON } from '@/theme/iconCollection'
 import useMapStore from '@/zustand/useMapStore'
 
 import Logo from '../Logo'
