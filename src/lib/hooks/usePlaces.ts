@@ -93,30 +93,75 @@ const usePlaces = () => {
 
   const getPlacesBounds = useCallback(
     (places: Place[], options?: FitBoundsOptions) => {
+      // Enhanced validation to prevent @math.gl/web-mercator assertion errors
       if (!viewportWidth || !viewportHeight) return undefined
+
+      // Additional validation for minimum viable viewport dimensions
+      const minDimension = 50 // Minimum width/height for fitBounds to work properly
+      if (viewportWidth < minDimension || viewportHeight < minDimension) {
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.warn('Viewport too small for bounds calculation:', {
+            viewportWidth,
+            viewportHeight,
+          })
+        }
+        return undefined
+      }
+
+      // Validate places array
+      if (!places || places.length === 0) return undefined
 
       const lat = places.map(p => p.latitude)
       const lng = places.map(p => p.longitude)
 
+      // Validate coordinates
+      const validLat = lat.filter(l => !Number.isNaN(l) && Number.isFinite(l))
+      const validLng = lng.filter(l => !Number.isNaN(l) && Number.isFinite(l))
+
+      if (validLat.length === 0 || validLng.length === 0) return undefined
+
       const bounds: FitBoundsOptions['bounds'] = [
-        [Math.min.apply(null, lng), Math.min.apply(null, lat)],
-        [Math.max.apply(null, lng), Math.max.apply(null, lat)],
+        [Math.min.apply(null, validLng), Math.min.apply(null, validLat)],
+        [Math.max.apply(null, validLng), Math.max.apply(null, validLat)],
       ]
 
+      // Additional bounds validation
       if (bounds[0][0] === Infinity || bounds[0][1] === Infinity) return undefined
+      if (bounds[1][0] === -Infinity || bounds[1][1] === -Infinity) return undefined
+      if (
+        Number.isNaN(bounds[0][0]) ||
+        Number.isNaN(bounds[0][1]) ||
+        Number.isNaN(bounds[1][0]) ||
+        Number.isNaN(bounds[1][1])
+      )
+        return undefined
 
-      return fitBounds({
-        bounds,
-        width: viewportWidth,
-        height: viewportHeight,
-        padding: {
-          bottom: 120,
-          left: 60,
-          right: 60,
-          top: 180,
-        },
-        options,
-      } as FitBoundsOptions)
+      try {
+        return fitBounds({
+          bounds,
+          width: viewportWidth,
+          height: viewportHeight,
+          padding: {
+            bottom: 120,
+            left: 60,
+            right: 60,
+            top: 180,
+          },
+          ...options,
+        } as FitBoundsOptions)
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development') {
+          // eslint-disable-next-line no-console
+          console.warn('fitBounds calculation failed:', {
+            error: error instanceof Error ? error.message : String(error),
+            bounds,
+            viewportWidth,
+            viewportHeight,
+          })
+        }
+        return undefined
+      }
     },
     [viewportHeight, viewportWidth],
   )

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Mobile Iframe Test</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 10px;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+        }
+
+        .mobile-container {
+            max-width: 375px;
+            /* iPhone width */
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            background: #333;
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .iframe-wrapper {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            /* Fixed height for mobile */
+            background: #ddd;
+        }
+
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        .debug-info {
+            padding: 10px;
+            font-size: 12px;
+            background: #f8f8f8;
+        }
+
+        .debug-info div {
+            margin: 2px 0;
+        }
+
+        /* Mobile-specific styles */
+        @media (max-width: 480px) {
+            .mobile-container {
+                max-width: 100%;
+                border-radius: 0;
+            }
+
+            .iframe-wrapper {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mobile-container">
+        <div class="header">
+            Mobile Iframe Test - Map Embed
+        </div>
+
+        <div class="iframe-wrapper">
+            <iframe src="/map/embed?lng=34.42&lat=31.46&z=9.00" id="mobile-iframe" allowfullscreen allow="geolocation"
+                loading="lazy"></iframe>
+        </div>
+
+        <div class="debug-info">
+            <div><strong>Device Info:</strong></div>
+            <div>Screen: <span id="screen-size"></span></div>
+            <div>Window: <span id="window-size"></span></div>
+            <div>User Agent: <span id="user-agent"></span></div>
+            <div>Touch Support: <span id="touch-support"></span></div>
+            <div>Iframe Status: <span id="iframe-status">Loading...</span></div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile detection and debugging
+        function updateDeviceInfo() {
+            document.getElementById('screen-size').textContent =
+                `${screen.width}×${screen.height}`;
+            document.getElementById('window-size').textContent =
+                `${window.innerWidth}×${window.innerHeight}`;
+            document.getElementById('user-agent').textContent =
+                navigator.userAgent.split(' ').slice(-2).join(' ');
+            document.getElementById('touch-support').textContent =
+                'ontouchstart' in window ? 'Yes' : 'No';
+        }
+
+        // Update device info
+        updateDeviceInfo();
+        window.addEventListener('resize', updateDeviceInfo);
+
+        // Monitor iframe
+        const iframe = document.getElementById('mobile-iframe');
+        const statusEl = document.getElementById('iframe-status');
+
+        iframe.addEventListener('load', function () {
+            statusEl.textContent = 'Loaded ✅';
+            statusEl.style.color = 'green';
+            console.log('📱 Mobile iframe loaded successfully');
+        });
+
+        iframe.addEventListener('error', function () {
+            statusEl.textContent = 'Error ❌';
+            statusEl.style.color = 'red';
+            console.error('📱 Mobile iframe failed to load');
+        });
+
+        // Test iframe dimensions
+        setTimeout(() => {
+            const rect = iframe.getBoundingClientRect();
+            console.log('📱 Iframe dimensions:', {
+                width: rect.width,
+                height: rect.height,
+                visible: rect.width > 0 && rect.height > 0
+            });
+        }, 2000);
+    </script>
+</body>
+
+</html>

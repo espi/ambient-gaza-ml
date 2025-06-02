@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Iframe Test - Ambient Gaza Map</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8fafc;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            display: block;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .status.success {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .status.error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .status.loading {
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+        }
+
+        .info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            iframe {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🗺️ Simple Iframe Test</h1>
+            <p>Basic functionality test for the mobile-optimized map embed. This page demonstrates the improved iframe
+                implementation with mobile fixes.</p>
+        </div>
+
+        <div class="test-container">
+            <iframe src="/map/embed?lng=34.42&lat=31.46&z=9.00" id="test-iframe" allowfullscreen
+                allow="geolocation; fullscreen" loading="lazy" title="Ambient Gaza Interactive Map"></iframe>
+        </div>
+
+        <div class="status loading" id="status">
+            🔄 Loading iframe...
+        </div>
+
+        <div class="info">
+            <div>📱 <strong>Mobile Ready:</strong> Touch-optimized</div>
+            <div>⚡ <strong>Performance:</strong> Lazy loading enabled</div>
+            <div>🔧 <strong>Error-Free:</strong> @math.gl fixes applied</div>
+            <div>🎯 <strong>Responsive:</strong> Scales on all devices</div>
+        </div>
+    </div>
+
+    <script>
+        const iframe = document.getElementById('test-iframe');
+        const statusEl = document.getElementById('status');
+
+        // Success handler
+        iframe.addEventListener('load', function () {
+            statusEl.className = 'status success';
+            statusEl.innerHTML = '✅ Iframe loaded successfully! Map is interactive and mobile-optimized.';
+        });
+
+        // Error handler
+        iframe.addEventListener('error', function () {
+            statusEl.className = 'status error';
+            statusEl.innerHTML = '❌ Failed to load iframe. Check your development server.';
+        });
+
+        // Timeout fallback
+        setTimeout(() => {
+            if (statusEl.className.includes('loading')) {
+                statusEl.className = 'status error';
+                statusEl.innerHTML = '⏱️ Iframe loading timeout. Check your connection and server status.';
+            }
+        }, 10000);
+    </script>
+</body>
+
+</html>

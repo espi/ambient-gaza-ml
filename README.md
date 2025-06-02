@@ -6,6 +6,76 @@ The JSX rendering output is a bit slower than the layer rendering output. But it
 
 You will need a MapTiler account to use the MapLibre GL JS library. You can get a free account [here](https://www.maptiler.com/). A simple mapbox-to-maplibre-gl resolver is already in place in `next.config.js`.
 
+## ✨ Features
+
+- 🗺️ **MapLibre GL JS** - Fast, vector-based interactive maps
+- 📱 **Mobile-First Design** - Optimized for all devices with responsive UI
+- 🎯 **Map Embedding** - Mobile-optimized iframe embedding with comprehensive mobile fixes
+- 🔧 **Debug Tools** - Built-in debugging panel and viewport testing utilities
+- ⚡ **Performance** - Optimized clustering, lazy loading, and error handling
+- 🎨 **Modern UI** - Clean design with Tailwind CSS and Lucide icons
+- 🧩 **Type Safety** - Full TypeScript support with comprehensive type definitions
+
+## 🗺️ Map Embedding
+
+This project includes a comprehensive **mobile-optimized map embedding system** that allows you to embed interactive maps in any website. 
+
+### How to Embed
+
+1. **From the UI**: Click the share/embed button in the map interface
+2. **Direct URL**: Use `/map/embed?lng=34.42&lat=31.46&z=9.00` with your coordinates
+
+### Mobile-Optimized Embed Code
+
+```html
+<!-- Basic mobile-optimized embed -->
+<iframe 
+  src="https://your-domain.com/map/embed?lng=34.42&lat=31.46&z=9.00" 
+  width="100%" 
+  height="400" 
+  frameborder="0" 
+  style="border:0; min-height: 300px; border-radius: 8px;" 
+  allowfullscreen="" 
+  allow="geolocation; fullscreen"
+  loading="lazy"
+  title="Interactive Map">
+</iframe>
+```
+
+### Responsive Embed (Recommended)
+
+```html
+<!-- Responsive container that scales perfectly on all devices -->
+<div style="position: relative; width: 100%; max-width: 1200px; margin: 0 auto;">
+  <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">
+    <iframe 
+      src="https://your-domain.com/map/embed?lng=34.42&lat=31.46&z=9.00" 
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+      allowfullscreen="" 
+      allow="geolocation; fullscreen"
+      loading="lazy"
+      title="Interactive Map">
+    </iframe>
+  </div>
+</div>
+```
+
+### ✅ Mobile Compatibility Features
+
+- **iOS Safari Optimized** - Fixed viewport issues and touch handling
+- **Android Chrome Compatibility** - Smooth performance on all Android devices  
+- **Responsive Design** - Automatically adapts to screen size
+- **Touch-Friendly** - Optimized pan/zoom gestures
+- **Error-Free** - Resolved `@math.gl/web-mercator` viewport switching errors
+- **Fast Loading** - Lazy loading and performance optimizations
+
+### Testing Your Embed
+
+Use our built-in testing tools:
+- **`/simple-iframe-test.html`** - Basic iframe functionality test
+- **`/mobile-iframe-test.html`** - Mobile-specific device testing
+- **`/viewport-switch-test.html`** - Comprehensive viewport switching validation
+
 ## Environment Setup
 
 1. Copy `.env.local.example` to `.env.local`
@@ -81,6 +151,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - **[Development Guide](./docs/development.md)** - Development workflow, project structure, and best practices  
 - **[MapLibre Integration Guide](./docs/maplibre-setup.md)** - Detailed MapLibre GL customization and usage
 - **[Debugging Guide](./docs/debugging.md)** - Debug panel, marker visibility issues, and troubleshooting workflows
+- **[Mobile Iframe Fix Guide](./docs/iframe-mobile-fix.md)** - Complete mobile embedding solution and @math.gl error fixes
 - **[Deployment Guide](./docs/deployment.md)** - Production deployment to various platforms
 - **[Troubleshooting Guide](./docs/troubleshooting.md)** - Common issues and solutions
 

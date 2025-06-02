@@ -15,7 +15,7 @@ const EmbedMapContainer = ({ initialViewState }: EmbedMapContainerProps) => (
       showSidebar={false}
       showSettingsBox={false}
       showMapControls
-      className="absolute overflow-hidden inset-0 bg-mapBg"
+      className="absolute overflow-hidden inset-0 bg-mapBg w-full h-full min-h-[200px] embed-map-mobile-friendly"
     />
   </MapContextProvider>
 )

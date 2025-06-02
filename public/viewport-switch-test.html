@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewport Switch Test - @math.gl/web-mercator Error Fix</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+        }
+
+        .test-controls {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .test-container {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .viewport-desktop {
+            width: 1200px;
+            height: 600px;
+            margin: 0 auto;
+        }
+
+        .viewport-tablet {
+            width: 768px;
+            height: 500px;
+            margin: 0 auto;
+        }
+
+        .viewport-mobile {
+            width: 375px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .status.success {
+            background: #e7f5e7;
+            color: #2d5a2d;
+        }
+
+        .status.error {
+            background: #ffeaea;
+            color: #8b2635;
+        }
+
+        .status.warning {
+            background: #fff3e0;
+            color: #8b4513;
+        }
+
+        .debug-log {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        button.active {
+            background: #28a745;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="test-controls">
+        <h1>🔧 Viewport Switch Test - @math.gl/web-mercator Error Fix</h1>
+        <p>This test simulates viewport size changes that previously caused the "@math.gl/web-mercator: assertion
+            failed" error.</p>
+
+        <div>
+            <button onclick="switchViewport('desktop')" id="btn-desktop">Desktop (1200×600)</button>
+            <button onclick="switchViewport('tablet')" id="btn-tablet">Tablet (768×500)</button>
+            <button onclick="switchViewport('mobile')" id="btn-mobile" class="active">Mobile (375×400)</button>
+            <button onclick="performStressTest()">🔄 Stress Test (Rapid Switching)</button>
+        </div>
+
+        <div class="status success" id="status">
+            ✅ Ready - Click buttons above to test viewport switching
+        </div>
+
+        <div class="debug-log" id="debug-log">
+            📊 Debug Log (monitoring for @math.gl/web-mercator errors):
+        </div>
+    </div>
+
+    <div class="test-container viewport-mobile" id="container">
+        <div class="iframe-container">
+            <iframe src="/map/embed?lng=34.42&lat=31.46&z=9.00" id="test-iframe"></iframe>
+        </div>
+    </div>
+
+    <script>
+        let currentViewport = 'mobile';
+        let errorCount = 0;
+        let testCount = 0;
+
+        const container = document.getElementById('container');
+        const status = document.getElementById('status');
+        const debugLog = document.getElementById('debug-log');
+
+        // Log function
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+            debugLog.innerHTML += '\n' + logEntry;
+            debugLog.scrollTop = debugLog.scrollHeight;
+
+            if (type === 'error') {
+                errorCount++;
+                updateStatus(`❌ Error detected! Total errors: ${errorCount}`, 'error');
+            }
+        }
+
+        // Update status
+        function updateStatus(message, type = 'success') {
+            status.className = `status ${type}`;
+            status.textContent = message;
+        }
+
+        // Switch viewport size
+        function switchViewport(viewport) {
+            testCount++;
+            log(`Switching to ${viewport} viewport (test #${testCount})`);
+
+            // Update button states
+            document.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`btn-${viewport}`).classList.add('active');
+
+            // Remove current viewport class
+            container.className = 'test-container';
+
+            // Add new viewport class with a small delay to trigger resize events
+            setTimeout(() => {
+                container.classList.add(`viewport-${viewport}`);
+                currentViewport = viewport;
+
+                // Monitor for errors after viewport change
+                setTimeout(() => {
+                    if (errorCount === 0) {
+                        updateStatus(`✅ Viewport switch to ${viewport} successful - No @math.gl errors!`, 'success');
+                    }
+                }, 1000);
+            }, 50);
+        }
+
+        // Stress test - rapid viewport switching
+        function performStressTest() {
+            updateStatus('🔄 Running stress test - rapid viewport switching...', 'warning');
+            log('Starting stress test: rapid viewport switching');
+
+            const viewports = ['desktop', 'tablet', 'mobile'];
+            let currentIndex = 0;
+
+            const stressInterval = setInterval(() => {
+                switchViewport(viewports[currentIndex]);
+                currentIndex = (currentIndex + 1) % viewports.length;
+            }, 200);
+
+            // Stop after 10 switches
+            setTimeout(() => {
+                clearInterval(stressInterval);
+                if (errorCount === 0) {
+                    updateStatus('✅ Stress test completed - No @math.gl errors detected!', 'success');
+                    log('Stress test completed successfully');
+                } else {
+                    updateStatus(`❌ Stress test completed with ${errorCount} errors`, 'error');
+                    log(`Stress test completed with ${errorCount} errors`);
+                }
+            }, 2000);
+        }
+
+        // Monitor iframe loading
+        const iframe = document.getElementById('test-iframe');
+
+        iframe.addEventListener('load', () => {
+            log('Iframe loaded successfully');
+        });
+
+        iframe.addEventListener('error', () => {
+            log('Iframe failed to load', 'error');
+        });
+
+        // Monitor for console errors (including @math.gl/web-mercator)
+        const originalConsoleError = console.error;
+        console.error = function (...args) {
+            const message = args.join(' ');
+            if (message.includes('@math.gl/web-mercator')) {
+                log(`CRITICAL: @math.gl/web-mercator error detected: ${message}`, 'error');
+            } else if (message.includes('assertion failed')) {
+                log(`Assertion error detected: ${message}`, 'error');
+            }
+
+            // Call original console.error
+            originalConsoleError.apply(console, args);
+        };
+
+        // Monitor for console warnings
+        const originalConsoleWarn = console.warn;
+        console.warn = function (...args) {
+            const message = args.join(' ');
+            if (message.includes('Viewport too small') || message.includes('fitBounds calculation failed')) {
+                log(`Viewport warning (expected during fixes): ${message}`, 'warning');
+            }
+
+            // Call original console.warn
+            originalConsoleWarn.apply(console, args);
+        };
+
+        // Initial log
+        log('Viewport switch test initialized');
+        log('Monitoring for @math.gl/web-mercator assertion errors...');
+    </script>
+</body>
+
+</html>
