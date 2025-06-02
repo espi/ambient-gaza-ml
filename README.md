@@ -18,39 +18,22 @@ You will need a MapTiler account to use the MapLibre GL JS library. You can get 
 
 ## 🗺️ Map Embedding
 
-This project includes a comprehensive **mobile-optimized map embedding system** that allows you to embed interactive maps in any website. 
+This project includes a **mobile-optimized map embedding system** with a square format optimized for popup visibility and mobile devices.
 
 ### How to Embed
 
 1. **From the UI**: Click the share/embed button in the map interface
 2. **Direct URL**: Use `/map/embed?lng=34.42&lat=31.46&z=9.00` with your coordinates
 
-### Mobile-Optimized Embed Code
+### Square Embed Code
 
 ```html
-<!-- Basic mobile-optimized embed -->
-<iframe 
-  src="https://your-domain.com/map/embed?lng=34.42&lat=31.46&z=9.00" 
-  width="100%" 
-  height="400" 
-  frameborder="0" 
-  style="border:0; min-height: 300px; border-radius: 8px;" 
-  allowfullscreen="" 
-  allow="geolocation; fullscreen"
-  loading="lazy"
-  title="Interactive Map">
-</iframe>
-```
-
-### Responsive Embed (Recommended)
-
-```html
-<!-- Responsive container that scales perfectly on all devices -->
-<div style="position: relative; width: 100%; max-width: 1200px; margin: 0 auto;">
-  <div style="position: relative; width: 100%; height: 0; padding-bottom: 56.25%;">
+<!-- Square responsive map embed -->
+<div style="position: relative; width: 100%; max-width: 600px; margin: 0 auto;">
+  <div style="position: relative; width: 100%; height: 0; padding-bottom: 100%; /* 1:1 square ratio */">
     <iframe 
       src="https://your-domain.com/map/embed?lng=34.42&lat=31.46&z=9.00" 
-      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;" 
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 8px;" 
       allowfullscreen="" 
       allow="geolocation; fullscreen"
       loading="lazy"
@@ -60,14 +43,13 @@ This project includes a comprehensive **mobile-optimized map embedding system** 
 </div>
 ```
 
-### ✅ Mobile Compatibility Features
+### ✅ Key Features
 
-- **iOS Safari Optimized** - Fixed viewport issues and touch handling
-- **Android Chrome Compatibility** - Smooth performance on all Android devices  
-- **Responsive Design** - Automatically adapts to screen size
-- **Touch-Friendly** - Optimized pan/zoom gestures
-- **Error-Free** - Resolved `@math.gl/web-mercator` viewport switching errors
-- **Fast Loading** - Lazy loading and performance optimizations
+- **📐 Square Format** - Optimal popup visibility in all directions
+- **📱 Mobile-Optimized** - Responsive design for all devices
+- **🎯 Interactive** - Full zoom, pan, and audio functionality
+- **⚡ Fast Loading** - Lazy loading and performance optimizations
+- **🔧 Error-Free** - Resolved viewport switching issues
 
 ### Testing Your Embed
 
