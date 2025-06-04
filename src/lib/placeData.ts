@@ -8,6 +8,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 1000001,
     headline: 'Rashid Street',
+    source: 'Ahmed Alnaouq',
     latitude: 31.52112337347405,
     longitude: 34.43139435582181,
     category: CATEGORY_ID.SPOKEN_WORD,
@@ -18,6 +19,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 1000002,
     headline: 'Al-Azhar University',
+    source: 'Ahmed Alnaouq',
     latitude: 31.51461142566115,
     longitude: 34.440482323391706,
     category: CATEGORY_ID.SPOKEN_WORD,
@@ -28,6 +30,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 1000003,
     headline: 'Gaza Beach',
+    source: 'Ahmed Alnaouq',
     latitude: 31.51922550317379,
     longitude: 34.427382084657445,
     category: CATEGORY_ID.SPOKEN_WORD,
@@ -38,6 +41,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 1000004,
     headline: 'Deir Al-Balah-City Cemetery',
+    source: 'Ahmed Alnaouq',
     latitude: 31.416383489987656,
     longitude: 34.352655485865704,
     category: CATEGORY_ID.SPOKEN_WORD,
@@ -48,6 +52,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 1000005,
     headline: 'Deir Al-Balah-City Mosque',
+    source: 'Ahmed Alnaouq',
     latitude: 31.416983082463727,
     longitude: 34.352109079864825,
     category: CATEGORY_ID.SPOKEN_WORD,
@@ -57,6 +62,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 1000006,
     headline: 'Deir Al-Balah-City',
+    source: 'Ahmed Alnaouq',
     latitude: 31.4167,
     longitude: 34.3526,
     category: CATEGORY_ID.SPOKEN_WORD,
@@ -67,6 +73,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 1000007,
     headline: "Ahmed's House",
+    source: 'Ahmed Alnaouq',
     latitude: 31.415679,
     longitude: 34.348473,
     category: CATEGORY_ID.SPOKEN_WORD,
@@ -77,6 +84,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 1000008,
     headline: 'Gaza Seaport',
+    source: 'Ahmed Alnaouq',
     latitude: 31.5248136354735,
     longitude: 34.42822272883563,
     category: CATEGORY_ID.SPOKEN_WORD,
@@ -90,6 +98,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 2000001,
     headline: 'Olive Harvest',
+    source: 'Ambient Gaza Vol. 1',
     latitude: 31.516456387179815,
     longitude: 34.51580727116436,
     category: CATEGORY_ID.SOUNDSCAPES,
@@ -99,6 +108,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 2000002,
     headline: 'Streets',
+    source: 'Ambient Gaza Vol. 1',
     latitude: 31.51526095158495,
     longitude: 34.450082084657446,
     category: CATEGORY_ID.SOUNDSCAPES,
@@ -108,6 +118,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 2000003,
     headline: 'Playground',
+    source: 'Ambient Gaza Vol. 1',
     latitude: 31.508391940483044,
     longitude: 34.47126818650692,
     category: CATEGORY_ID.SOUNDSCAPES,
@@ -117,6 +128,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 2000004,
     headline: 'Beach',
+    source: 'Ambient Gaza Vol. 1',
     latitude: 31.51453936774826,
     longitude: 34.42281445767127,
     category: CATEGORY_ID.SOUNDSCAPES,
@@ -126,6 +138,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 2000005,
     headline: 'Graduation',
+    source: 'Ambient Gaza Vol. 1',
     latitude: 31.512269846188218,
     longitude: 34.45167661878343,
     category: CATEGORY_ID.SOUNDSCAPES,
@@ -135,6 +148,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 2000006,
     headline: 'Date Harvest',
+    source: 'Ambient Gaza Vol. 1',
     latitude: 31.409286977465626,
     longitude: 34.37807518650691,
     category: CATEGORY_ID.SOUNDSCAPES,
@@ -144,6 +158,7 @@ export const gazaPlaces: Place[] = [
   {
     id: 2000007,
     headline: 'Fish Market',
+    source: 'Ambient Gaza Vol. 1',
     latitude: 31.52448649081254,
     longitude: 34.43204272883564,
     category: CATEGORY_ID.SOUNDSCAPES,

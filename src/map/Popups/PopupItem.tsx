@@ -55,6 +55,7 @@ const PopupItem = ({ place, handleBackToCluster, isHoverMode = false }: PopupIte
         {isHoverMode ? (
           // Simplified hover version
           <div className="text-center">
+            <h4 className="p-1 font-semibold text-dark/40 text-sm">{place.source}</h4>
             <h3 className="text-base font-semibold leading-tight m-0 mb-1">{place.headline}</h3>
 
             {place.audioFile && (
@@ -80,6 +81,7 @@ const PopupItem = ({ place, handleBackToCluster, isHoverMode = false }: PopupIte
             </Button>
             <div className="flex flex-row justify-center pt-3">
               <div className="flex flex-col justify-center p-3 text-center w-full">
+                <h4 className="p-1 font-semibold text-dark/40 text-sm">{place.source}</h4>
                 <h3 className="text-lg font-bold leading-none m-0">{place.headline}</h3>
 
                 {place.audioFile && (

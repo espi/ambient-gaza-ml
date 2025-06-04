@@ -15,6 +15,7 @@ export type Category = {
 export type Place = {
   id: number
   headline: string
+  source: string
   population?: number
   longitude: number
   latitude: number
